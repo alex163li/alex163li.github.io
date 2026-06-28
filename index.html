@@ -95,6 +95,20 @@
             text-align: center;
         }
 
+        /* ===== АВАТАР С УВЕЛИЧЕНИЕМ ПРИ НАВЕДЕНИИ ===== */
+        .avatar-wrapper {
+            display: inline-block;
+            position: relative;
+            border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .avatar-wrapper:hover {
+            transform: scale(1.5);
+            z-index: 5;
+        }
+
         .avatar-circle {
             width: 140px;
             height: 140px;
@@ -107,12 +121,18 @@
             justify-content: center;
             overflow: hidden;
             box-shadow: 0 8px 25px rgba(74, 124, 247, 0.25);
+            transition: box-shadow 0.4s ease;
+        }
+
+        .avatar-wrapper:hover .avatar-circle {
+            box-shadow: 0 12px 40px rgba(74, 124, 247, 0.45);
         }
 
         .avatar-circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .avatar h1 {
@@ -399,6 +419,10 @@
                 padding: 4px 14px;
                 font-size: 11px;
             }
+            /* На мобильных уменьшаем масштаб увеличения */
+            .avatar-wrapper:hover {
+                transform: scale(1.3);
+            }
         }
 
         @media print {
@@ -434,6 +458,10 @@
             .lang-switcher {
                 display: none !important;
             }
+            /* Отключаем анимацию при печати */
+            .avatar-wrapper:hover {
+                transform: none !important;
+            }
         }
     </style>
 </head>
@@ -447,26 +475,27 @@
             <button class="lang-btn" data-lang="en">EN</button>
         </div>
 
-        <!-- ===== SIDEBAR (общий для обоих языков, меняется только текст) ===== -->
+        <!-- ===== SIDEBAR ===== -->
         <div class="sidebar" id="sidebar">
-            <!-- Контент сайдбара загружается через JS -->
+            <!-- Контент загружается через JS -->
         </div>
 
-        <!-- ===== MAIN (общий для обоих языков, меняется только текст) ===== -->
+        <!-- ===== MAIN ===== -->
         <div class="main" id="main">
-            <!-- Контент основной части загружается через JS -->
+            <!-- Контент загружается через JS -->
         </div>
 
     </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
     <script>
         const content = {
             ru: {
                 sidebar: `
                     <div class="avatar">
-                        <div class="avatar-circle">
-                            <img src="https://i.imgur.com/MrXVHuD.jpeg" alt="Алексей Лялин">
+                        <div class="avatar-wrapper">
+                            <div class="avatar-circle">
+                                <img src="https://i.imgur.com/MrXVHuD.jpeg" alt="Алексей Лялин">
+                            </div>
                         </div>
                         <h1>Алексей Лялин</h1>
                         <div class="title">Руководитель IT-отдела</div>
@@ -623,8 +652,10 @@
             en: {
                 sidebar: `
                     <div class="avatar">
-                        <div class="avatar-circle">
-                            <img src="https://i.imgur.com/MrXVHuD.jpeg" alt="Alexey Lyalin">
+                        <div class="avatar-wrapper">
+                            <div class="avatar-circle">
+                                <img src="https://i.imgur.com/MrXVHuD.jpeg" alt="Alexey Lyalin">
+                            </div>
                         </div>
                         <h1>Alexey Lyalin</h1>
                         <div class="title">Head of IT Department</div>
@@ -801,7 +832,6 @@
             });
         });
 
-        // Восстановление сохранённого языка
         const savedLang = localStorage.getItem('preferredLang') || 'ru';
         renderLanguage(savedLang);
     </script>
